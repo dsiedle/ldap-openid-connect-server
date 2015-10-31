@@ -51,17 +51,17 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 		@Override
 		public Object mapFromAttributes(Attributes attr) throws NamingException {
 
-			if (attr.get("uid") == null) {
-				return null; // we can't go on if there's no UID to look up
+			if (attr.get("cn") == null) {
+				return null; // we can't go on if there's no CN to look up
 			}
 			
 			UserInfo ui = new DefaultUserInfo();
 			
-			// save the UID as the preferred username
-			ui.setPreferredUsername(attr.get("uid").get().toString());
+			// save the CN as the preferred username
+			ui.setPreferredUsername(attr.get("cn").get().toString());
 			
-			// for now we use the UID as the subject as well (this should probably be different)
-			ui.setSub(attr.get("uid").get().toString());
+			// for now we use the CN as the subject as well (this should probably be different)
+			ui.setSub(attr.get("cn").get().toString());
 			
 			
 			// add in the optional fields
@@ -70,14 +70,14 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 			if (attr.get("mail") != null) {
 				ui.setEmail(attr.get("mail").get().toString());
 				// if this domain also provisions email addresses, this should be set to true
-				ui.setEmailVerified(false);
+				ui.setEmailVerified(true);
 			}
 			
 			// phone number
 			if (attr.get("telephoneNumber") != null) {
 				ui.setPhoneNumber(attr.get("telephoneNumber").get().toString());
 				// if this domain also provisions phone numbers, this should be set to true
-				ui.setPhoneNumberVerified(false);
+				ui.setPhoneNumberVerified(true);
 			}
 			
 			// name structure
@@ -109,18 +109,18 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 		@Override
 		public UserInfo load(String username) throws Exception {
 			
-			Filter find = new EqualsFilter("uid", username);
+			Filter find = new EqualsFilter("cn", username);
 			List res = ldapTemplate.search("", find.encode(), attributesMapper);
 			
 			if (res.isEmpty()) {
 				// user not found, error
-				throw new IllegalArgumentException("User not found: " + username);
+				throw new IllegalArgumentException("User with this cn not found: " + username);
 			} else if (res.size() == 1) {
 				// exactly one user found, return them
 				return (UserInfo) res.get(0);
 			} else {
 				// more than one user found, error
-				throw new IllegalArgumentException("User not found: " + username);
+				throw new IllegalArgumentException("More than one user with this cn found: " + username);
 			}
 			
 		}
