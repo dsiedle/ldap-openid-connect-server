@@ -50,7 +50,7 @@
 				<constructor-arg ref="contextSource" />
 				<property name="userDnPatterns">
 					<list>
-						<value>uid={0}</value>
+						<value>cn={0}</value>
 					</list>
 				</property>
 			</bean>
