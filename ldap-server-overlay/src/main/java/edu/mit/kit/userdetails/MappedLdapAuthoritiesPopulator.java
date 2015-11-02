@@ -2,6 +2,8 @@ package edu.mit.kit.userdetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.ldap.core.DirContextOperations;
@@ -10,6 +12,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator;
 
 import com.google.common.collect.ImmutableSet;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Mapps all users to ROLE_USER, additionally adds ROLE_ADMIN to anybody whose username
@@ -20,11 +25,13 @@ import com.google.common.collect.ImmutableSet;
  */
 public class MappedLdapAuthoritiesPopulator implements LdapAuthoritiesPopulator {
 
+	private static final Logger logger = LoggerFactory.getLogger(MappedLdapAuthoritiesPopulator.class);
+
 	private Set<String> admins = Collections.emptySet();
 	
 	private static final GrantedAuthority ROLE_USER = new SimpleGrantedAuthority("ROLE_USER");
 	private static final GrantedAuthority ROLE_ADMIN = new SimpleGrantedAuthority("ROLE_ADMIN");
-	
+
 	public Set<String> getAdmins() {
 		return admins;
 	}
@@ -35,6 +42,8 @@ public class MappedLdapAuthoritiesPopulator implements LdapAuthoritiesPopulator 
 
 	@Override
 	public Collection<? extends GrantedAuthority> getGrantedAuthorities(DirContextOperations userData, String username) {
+
+		logger.debug("getGrantedAuthorities for user '" + username + "'.");
 		
 		if (admins.contains(username)) {
 			return ImmutableSet.of(ROLE_ADMIN, ROLE_USER);

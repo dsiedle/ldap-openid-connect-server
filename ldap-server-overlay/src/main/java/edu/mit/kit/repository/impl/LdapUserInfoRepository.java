@@ -21,6 +21,9 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Looks up the user information from an LDAP template and maps the results
  * into a UserInfo object. This object is then cached.
@@ -34,6 +37,7 @@ import com.google.common.util.concurrent.UncheckedExecutionException;
 public class LdapUserInfoRepository implements UserInfoRepository {
 
 	private LdapTemplate ldapTemplate;
+	private static final Logger logger = LoggerFactory.getLogger(LdapUserInfoRepository.class);
 	
 	public LdapTemplate getLdapTemplate() {
 		return ldapTemplate;
@@ -50,6 +54,8 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 	private AttributesMapper attributesMapper = new AttributesMapper() {
 		@Override
 		public Object mapFromAttributes(Attributes attr) throws NamingException {
+
+			logger.debug("Map attributes for user with cn equals to '" + attr.get("cn") + "'.");
 
 			if (attr.get("cn") == null) {
 				return null; // we can't go on if there's no CN to look up
@@ -109,6 +115,8 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 		@Override
 		public UserInfo load(String username) throws Exception {
 			
+			logger.debug("Load user info for user with cn equals to '" + username + "'.");
+
 			Filter find = new EqualsFilter("cn", username);
 			List res = ldapTemplate.search("", find.encode(), attributesMapper);
 			
@@ -117,6 +125,7 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 				throw new IllegalArgumentException("User with this cn not found: " + username);
 			} else if (res.size() == 1) {
 				// exactly one user found, return them
+				logger.debug("User info loaded.");
 				return (UserInfo) res.get(0);
 			} else {
 				// more than one user found, error
