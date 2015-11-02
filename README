@@ -1,1 +1,16 @@
+## Introduction:
+
 This is a version of the MITREid Connect server that speaks to a backend samba4 (and probably Microsoft AD...) LDAP system for its user information and authentication.
+
+### To use it:  
+1/ Take the main openid-connect-server project and build it:  
+
+2/ Insert a clone of this projet inside openid-connect project.
+
+3/ In src/main/webapp/WEB-INF/user-context.xml :   
+=> set ${ldap.server}, ${ldap.url}, ${ldap.userDn} and ${ldap.password}  
+
+4/ In src/main/webapp/WEB-INF/server-config.xml :  
+=> replace issuer property value with your value.  
+
+5/ Build this project and deploy it on tomcat or other java web server...
