@@ -145,26 +145,22 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 	}
 	
 	
-	@Override
 	public UserInfo getBySubject(String sub) {
 		// TODO: right now the subject is the username, should probably change
 		
 		return getByUsername(sub);
 	}
 
-	@Override
 	public UserInfo save(UserInfo userInfo) {
 		// read-only repository, unimplemented
 		return userInfo;
 	}
 
-	@Override
 	public void remove(UserInfo userInfo) {
 		// read-only repository, unimplemented
 		
 	}
 
-	@Override
 	public Collection<? extends UserInfo> getAll() {
 		// return a copy of the currently cached users
 		return cache.asMap().values();
@@ -174,6 +170,18 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 	public UserInfo getByUsername(String username) {
 		try {
 			return cache.get(username);
+		} catch (UncheckedExecutionException ue) {
+			return null;
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public UserInfo getByEmailAddress(String email) {
+		try {
+			return cache.get(email);
 		} catch (UncheckedExecutionException ue) {
 			return null;
 		} catch (ExecutionException e) {
