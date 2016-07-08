@@ -60,6 +60,7 @@
 				<property name="admins">
 					<set>
 						<!-- list admin usernames here -->
+						<value>iipadmin</value>
 					</set>
 				</property>
 			</bean>
