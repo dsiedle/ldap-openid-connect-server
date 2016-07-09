@@ -1,0 +1,33 @@
+<?xml version="1.0"  encoding="ISO-8859-1"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_0.dtd">
+
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+  <Set name="contextPath">/david-ldap</Set>
+  <Set name="war">C:\005_CODE\github\dsiedle\ldap-openid-connect-server\ldap-server-overlay\target\ldap-openid-connect-server</Set>
+  <Call class="java.lang.System" name="setProperty">
+      <Arg>issuer.url</Arg>
+      <Arg>http://localhost:8080/david-ldap/</Arg>
+  </Call>
+<Call class="java.lang.System" name="setProperty">
+      <Arg>ldap.server</Arg>
+      <Arg>ldap://10.86.8.150:389</Arg>
+  </Call>
+  <Call class="java.lang.System" name="setProperty">
+      <Arg>ldap.url</Arg>
+      <Arg>ldap://10.86.8.150:389</Arg>
+  </Call>
+  <Call class="java.lang.System" name="setProperty">
+      <Arg>ldap.userDn</Arg>
+      <Arg>KMSSYSTEM\Administrator</Arg>
+  </Call>
+  <Call class="java.lang.System" name="setProperty">
+      <Arg>ldap.password</Arg>
+      <Arg>Bdclab123</Arg>
+  </Call>
+  <Call class="java.lang.System" name="setProperty">
+      <Arg>ldap.base</Arg>
+      <Arg>CN=Users,DC=KMSSYSTEM,DC=local</Arg>
+  </Call>
+
+</Configure>
+
