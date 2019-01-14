@@ -1,4 +1,6 @@
 ## Introduction:
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fdsiedle%2Fldap-openid-connect-server.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fdsiedle%2Fldap-openid-connect-server?ref=badge_shield)
+
 
 This is a version of the MITREid Connect server that speaks to a backend samba4 (and probably Microsoft AD...) LDAP system for its user information and authentication.
 
@@ -14,3 +16,7 @@ This is a version of the MITREid Connect server that speaks to a backend samba4 
 => replace issuer property value with your value.  
 
 5/ Build this project and deploy it on tomcat or other java web server...
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fdsiedle%2Fldap-openid-connect-server.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fdsiedle%2Fldap-openid-connect-server?ref=badge_large)
